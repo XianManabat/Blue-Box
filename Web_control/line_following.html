@@ -7,279 +7,39 @@
         <link rel="stylesheet" href="lineFollowing.css">
     </head>
 
+    <body>
     <div class="controller-box">
 
-    <!-- directional control pad (vibrant) -->
-    <div class="pad-box">
-        <div class="pads">
-            <button class="pad-btn" id="nw" title="Move Northwest">↖</button>
-            <button class="pad-btn" id="n" title="Move North">↑</button>
-            <button class="pad-btn" id="ne" title="Move Northeast">↗</button>
-        </div>
-        <div class="pads">
-            <button class="pad-btn" id="w" title="Move West">←</button>
-            <button class="pad-btn" id="stop" title="Emergency Stop">■</button>
-            <button class="pad-btn" id="e" title="Move East">→</button>
-        </div>
-        <div class="pads">
-            <button class="pad-btn" id="sw" title="Move Southwest">↙</button>
-            <button class="pad-btn" id="s" title="Move South">↓</button>
-            <button class="pad-btn" id="se" title="Move Southeast">↘</button>
-        </div>
-        <div style="margin-top: 8px; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 5px 12px; border-radius: 28px;">
-            ⚡ directional control
-        </div>
-    </div>
-
-    <!-- dashboard (central vibrant info panel) -->
-    <div class="dashboard">
-        <div class="dashboard-content">
-            <div class="status-icon">🤖 ➰</div>
-            <div class="live-status" id="liveDirection">▶ STANDBY</div>
-            <div class="command-feedback" id="commandMsg">last command: —</div>
-            <p style="margin-top: 1rem; font-size: 0.8rem; letter-spacing: 0.5px;">✦ line following ready ✦</p>
-        </div>
-    </div>
-
-    <!-- Turn box (rotation & spin commands) -->
-    <div class="turn-box">
-        <div class="turn-control">
-            <div class="turn-label">🔄 ROTATION</div>
-            <div class="turn-buttons">
-                <button class="turn-btn" id="rotate-left" title="Rotate Left (counter-clockwise)">↺ L</button>
-                <button class="turn-btn" id="rotate-right" title="Rotate Right (clockwise)">↻ R</button>
-                <button class="turn-btn" id="rotate-180" title="U-turn / 180°">↺↻ 180°</button>
+        <div class="pad-box">
+        
+            <div class="pads">
+                <button class="pad-btn" id="nw">↖</button>
+                <button class="pad-btn" id="n">↑</button>
+                <button class="pad-btn" id="ne">↗</button>
             </div>
-            <div style="font-size:0.8rem; background: #00000055; border-radius: 20px; padding: 5px 10px;">
-                ⚙️ precise turn control
+
+            <div class="pads">
+                <button class="pad-btn" id="w">←</button>
+                <button class="pad-btn" id="stop">■</button>
+                <button class="pad-btn" id="e">→</button>
             </div>
+
+            <div class="pads">
+                <button class="pad-btn" id="sw">↙</button>
+                <button class="pad-btn" id="s">↓</button>
+                <button class="pad-btn" id="se">↘</button>
+            </div>
+
         </div>
+
+        <div class="dashboard">
+            <p>Dashboard</p>
+        </div>
+
+        <div class="turn-box">
+            
+        </div>
+
     </div>
-</div>
 
-<script>
-    // ========================
-    //  IMPROVED UI with colors + real-time feedback simulation
-    //  This simulates sending commands to a line-following robot.
-    //  All buttons provide visual + status updates.
-    // ========================
-
-    // DOM elements
-    const liveDirectionEl = document.getElementById('liveDirection');
-    const commandMsgEl = document.getElementById('commandMsg');
-    
-    // all directional pads
-    const padButtons = {
-        nw: document.getElementById('nw'),
-        n: document.getElementById('n'),
-        ne: document.getElementById('ne'),
-        w: document.getElementById('w'),
-        stop: document.getElementById('stop'),
-        e: document.getElementById('e'),
-        sw: document.getElementById('sw'),
-        s: document.getElementById('s'),
-        se: document.getElementById('se')
-    };
-    
-    // turn buttons
-    const rotateLeft = document.getElementById('rotate-left');
-    const rotateRight = document.getElementById('rotate-right');
-    const rotate180 = document.getElementById('rotate-180');
-    
-    // Helper: update dashboard with command & visual effect
-    function updateDashboard(commandText, directionIcon = '🤖') {
-        // update live direction display (show nice formatted command)
-        let displayCmd = commandText.toUpperCase();
-        if (commandText === 'stop') displayCmd = '■ STOP';
-        else if (commandText === 'rotate-left') displayCmd = '↺ ROTATE LEFT';
-        else if (commandText === 'rotate-right') displayCmd = '↻ ROTATE RIGHT';
-        else if (commandText === 'rotate-180') displayCmd = '🔄 U-TURN 180°';
-        else if (commandText === 'nw') displayCmd = '↖ NORTHWEST';
-        else if (commandText === 'n') displayCmd = '↑ NORTH';
-        else if (commandText === 'ne') displayCmd = '↗ NORTHEAST';
-        else if (commandText === 'w') displayCmd = '← WEST';
-        else if (commandText === 'e') displayCmd = '→ EAST';
-        else if (commandText === 'sw') displayCmd = '↙ SOUTHWEST';
-        else if (commandText === 's') displayCmd = '↓ SOUTH';
-        else if (commandText === 'se') displayCmd = '↘ SOUTHEAST';
-        
-        // set live status string with emoji context
-        let baseEmoji = '';
-        if (commandText === 'stop') baseEmoji = '🛑';
-        else if (commandText.includes('rotate')) baseEmoji = '🔄';
-        else if (commandText !== '—') baseEmoji = '🚗';
-        else baseEmoji = '⚡';
-        
-        liveDirectionEl.innerHTML = `${baseEmoji} ${displayCmd}`;
-        commandMsgEl.innerHTML = `last command: ${commandText.toUpperCase().replace('-',' ')}`;
-        
-        // add flash effect to dashboard command feedback
-        commandMsgEl.classList.add('feedback-active');
-        setTimeout(() => {
-            if (commandMsgEl) commandMsgEl.classList.remove('feedback-active');
-        }, 280);
-        
-        // simulate a subtle haptic feedback style (console can log for debugging)
-        console.log(`[ROBOT CMD] ${commandText} sent at ${new Date().toLocaleTimeString()}`);
-        
-        // additional animation on live direction element (brief scale)
-        liveDirectionEl.style.transform = 'scale(1.02)';
-        setTimeout(() => { if(liveDirectionEl) liveDirectionEl.style.transform = ''; }, 150);
-    }
-    
-    // Helper for pad commands
-    function sendPadCommand(direction) {
-        updateDashboard(direction);
-        // In a real application you'd call WebSocket / API / serial here.
-        // Optional: extra effect on pressed button? Already has active state.
-    }
-    
-    // Turn commands handler
-    function sendTurnCommand(turnType) {
-        let cmd = '';
-        if (turnType === 'left') cmd = 'rotate-left';
-        else if (turnType === 'right') cmd = 'rotate-right';
-        else if (turnType === '180') cmd = 'rotate-180';
-        updateDashboard(cmd);
-    }
-    
-    // attach event listeners to all pad buttons with rich feedback
-    if (padButtons.nw) padButtons.nw.addEventListener('click', () => sendPadCommand('nw'));
-    if (padButtons.n) padButtons.n.addEventListener('click', () => sendPadCommand('n'));
-    if (padButtons.ne) padButtons.ne.addEventListener('click', () => sendPadCommand('ne'));
-    if (padButtons.w) padButtons.w.addEventListener('click', () => sendPadCommand('w'));
-    if (padButtons.e) padButtons.e.addEventListener('click', () => sendPadCommand('e'));
-    if (padButtons.sw) padButtons.sw.addEventListener('click', () => sendPadCommand('sw'));
-    if (padButtons.s) padButtons.s.addEventListener('click', () => sendPadCommand('s'));
-    if (padButtons.se) padButtons.se.addEventListener('click', () => sendPadCommand('se'));
-    if (padButtons.stop) padButtons.stop.addEventListener('click', () => sendPadCommand('stop'));
-    
-    // Turn actions
-    if (rotateLeft) rotateLeft.addEventListener('click', () => sendTurnCommand('left'));
-    if (rotateRight) rotateRight.addEventListener('click', () => sendTurnCommand('right'));
-    if (rotate180) rotate180.addEventListener('click', () => sendTurnCommand('180'));
-    
-    // Optional: keyboard support for extra richness (makes interface more dynamic)
-    // but not required, improves accessibility.
-    window.addEventListener('keydown', (e) => {
-        const key = e.key;
-        // prevent default scrolling for arrow keys
-        const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '];
-        if (arrowKeys.includes(key) || key === 'w' || key === 'a' || key === 's' || key === 'd' || key === 'q' || key === 'e' || key === 'z' || key === 'c') {
-            e.preventDefault();
-        }
-        // map keyboard to actions
-        switch(key) {
-            case 'ArrowUp': sendPadCommand('n'); break;
-            case 'ArrowDown': sendPadCommand('s'); break;
-            case 'ArrowLeft': sendPadCommand('w'); break;
-            case 'ArrowRight': sendPadCommand('e'); break;
-            case 'w': sendPadCommand('n'); break;
-            case 's': sendPadCommand('s'); break;
-            case 'a': sendPadCommand('w'); break;
-            case 'd': sendPadCommand('e'); break;
-            case 'q': sendPadCommand('nw'); break;
-            case 'e': sendPadCommand('ne'); break;
-            case 'z': sendPadCommand('sw'); break;
-            case 'c': sendPadCommand('se'); break;
-            case ' ':  // spacebar for stop
-            case 'Stop':
-            case 'x': sendPadCommand('stop'); break;
-            case 'r': sendTurnCommand('right'); break;
-            case 'l': sendTurnCommand('left'); break;
-            case 'u': sendTurnCommand('180'); break;
-            default: break;
-        }
-    });
-    
-    // small startup greeting with vibrant message
-    setTimeout(() => {
-        updateDashboard('—');
-        commandMsgEl.innerHTML = '✨ system ready | tap any direction ✨';
-        liveDirectionEl.innerHTML = '🤖 awaiting command';
-        setTimeout(() => {
-            if(commandMsgEl.innerHTML.includes('ready')) {
-                commandMsgEl.innerHTML = 'last command: —';
-            }
-        }, 1800);
-    }, 100);
-    
-    // add hover tooltip styled (already have title) but also provide extra focus glow
-    const allBtns = document.querySelectorAll('.pad-btn, .turn-btn');
-    allBtns.forEach(btn => {
-        btn.addEventListener('mouseenter', () => {
-            btn.style.filter = 'brightness(1.05) saturate(1.2)';
-        });
-        btn.addEventListener('mouseleave', () => {
-            btn.style.filter = '';
-        });
-    });
-    
-    // extra: slight bounce on dashboard when command arrives (already via pulse and scale)
-    // also, let's add a pseudo event to demonstrate line following context.
-    // Visual enhancement: when 'stop' command -> special dashboard warning style.
-    const originalStopHandler = padButtons.stop.onclick;
-    // we already attached event but we can double-check we add subtle extra glow effect dynamically.
-    // No double event: fine.
-    
-    // To enrich the turn-box color experience: add rotating animation on click for turn icons?
-    // subtle transform on rotate buttons
-    const turnBtns = [rotateLeft, rotateRight, rotate180];
-    turnBtns.forEach(btn => {
-        if(!btn) return;
-        btn.addEventListener('click', function(e) {
-            this.style.transform = 'scale(0.96) translateY(2px)';
-            setTimeout(() => {
-                if(this) this.style.transform = '';
-            }, 100);
-        });
-    });
-    
-    // Enhance dashboard with dynamic pattern: show fake "sensor" readings for line follower flavor?
-    // for extra flair, we add random false sensor but just for amusement:
-    let sensorInterval = null;
-    function startAmbientSensorSimulation() {
-        // just adds background flavor but not intrusive, show occasional line status.
-        sensorInterval = setInterval(() => {
-            // only if the dashboard is visible and we're not spamming but it's fine
-            const randomStatus = ['line detected', 'curve ahead', 'junction', 'clear path', 'following black line'];
-            const randomIdx = Math.floor(Math.random() * randomStatus.length);
-            // optional: we don't override main status, but we can update a small secondary
-            let extraSpan = document.querySelector('.dashboard .status-note');
-            if(!extraSpan) {
-                const newSpan = document.createElement('div');
-                newSpan.className = 'status-note';
-                newSpan.style.fontSize = '0.7rem';
-                newSpan.style.marginTop = '0.8rem';
-                newSpan.style.background = '#00000066';
-                newSpan.style.padding = '4px 10px';
-                newSpan.style.borderRadius = '30px';
-                newSpan.style.opacity = '0.8';
-                const dashContent = document.querySelector('.dashboard-content');
-                if(dashContent) dashContent.appendChild(newSpan);
-                extraSpan = newSpan;
-            }
-            if(extraSpan && document.hasFocus()) {
-                extraSpan.innerHTML = `📡 sensor: ${randomStatus[randomIdx]}`;
-                setTimeout(() => {
-                    if(extraSpan && extraSpan.innerHTML.includes('sensor')) {
-                        // keep latest command feedback but we don't erase permanently
-                        if(!extraSpan._lock) extraSpan.style.opacity = '0.7';
-                    }
-                }, 2000);
-            }
-        }, 5000);
-    }
-    startAmbientSensorSimulation();
-    
-    // cleanup not needed in normal circumstances but nice for live page.
-    window.addEventListener('beforeunload', () => {
-        if(sensorInterval) clearInterval(sensorInterval);
-    });
-    
-    // final style: Add micro-glow to dashboard border upon any command (already looks premium)
-    // Ensure the interface remains responsive and colors pop!
-    console.log('✨ Enhanced line following controller — vibrant colors & modern UI');
-</script>
-</body>
 </html>
