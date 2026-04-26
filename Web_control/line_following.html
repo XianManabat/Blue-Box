@@ -6,30 +6,40 @@
         <title>Line following</title>
         <link rel="stylesheet" href="lineFollowing.css">
     </head>
+
     <body>
+    <div class="controller-box">
 
-        <div class="controller-box">
-
-            <!-- forward backward crabwalk -->
-            <div class="button-ctrl">
-                <div class="left">
-                    &#8592;
-                </div>
-                <div class="right">
-                    &#8594;
-                </div>
+        <div class="pad-box">
+        
+            <div class="pads">
+                <button class="pad-btn" id="nw">↖</button>
+                <button class="pad-btn" id="n">↑</button>
+                <button class="pad-btn" id="ne">↗</button>
             </div>
 
-            <!-- option screen -->
-            <div class="dashbaord">
-                <h1>This is dashbaord</h1>
+            <div class="pads">
+                <button class="pad-btn" id="w">←</button>
+                <button class="pad-btn" id="stop">■</button>
+                <button class="pad-btn" id="e">→</button>
             </div>
 
-            <!-- 360 turn -->
-            <div class="joystick">
-                <h1>this is joystick</h1>
+            <div class="pads">
+                <button class="pad-btn" id="sw">↙</button>
+                <button class="pad-btn" id="s">↓</button>
+                <button class="pad-btn" id="se">↘</button>
             </div>
-            
+
         </div>
-    </body>
+
+        <div class="dashboard">
+            <p>Dashboard</p>
+        </div>
+
+        <div class="turn-box">
+            <p>Turn</p>
+        </div>
+
+    </div>
+</body>
 </html>
