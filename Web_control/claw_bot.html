@@ -3,11 +3,82 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Claw Bot</title>
-        <link rel="stylesheet" href="style_.css">
+        <title>Line following</title>
+        <link rel="stylesheet" href="claw_bot.css">
     </head>
-    <body>
 
-        <h1> This is Claw bot</h1>
-    </body>
+    <body>
+    <div class="controller-box">
+
+        <div class="pad-box">
+        
+            <div class="pads">
+                <button class="pad-btn" id="nw">↖</button>
+                <button class="pad-btn" id="n">↑</button>
+                <button class="pad-btn" id="ne">↗</button>
+            </div>
+
+            <div class="pads">
+                <button class="pad-btn" id="w">←</button>
+                <button class="pad-btn" id="stop">■</button>
+                <button class="pad-btn" id="e">→</button>
+            </div>
+
+            <div class="pads">
+                <button class="pad-btn" id="sw">↙</button>
+                <button class="pad-btn" id="s">↓</button>
+                <button class="pad-btn" id="se">↘</button>
+            </div>
+
+        </div>
+
+        <div class="dashboard">
+            <div class="dashboard-inner">
+
+                <div class="mode-buttons">
+                    <button class="mode-btn" id="btn-maintenance" onclick="switchMode('maintenance')">Maintenance</button>
+                    <button class="mode-btn" id="btn-manual" onclick="switchMode('manual')">Manual</button>
+                </div>
+
+                <div class="mode-content" id="mode-maintenance" style="display:none;">
+                    <label>Left wheel speed</label>
+                    <input type="range" min="0" max="255" value="150" id="speed-left">
+                    <label>Right wheel speed</label>
+                    <input type="range" min="0" max="255" value="150" id="speed-right">
+                </div>
+
+                <div class="mode-content" id="mode-manual" style="display:none;">
+                    <p class="status-text">Speeds reset to default</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="claw-box">
+
+            <div class="pads">
+                <button class="pad-btn" id="up">↑</button>
+            </div>
+
+            <div class="pads">
+                <button class="pad-btn" id="r">←</button>
+                <button class="pad-btn" id="clamp">■</button>
+                <button class="pad-btn" id="l">→</button>
+            </div>
+
+            <div class="pads">
+                <button class="pad-btn" id="down">↓</button>
+            </div>
+        </div>
+
+    </div>
+
 </html>
+<script>
+    function switchMode(mode) {
+        document.querySelectorAll('.mode-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.mode-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('mode-' + mode).style.display = 'flex';
+        document.getElementById('btn-' + mode).classList.add('active');
+    }
+</script>
