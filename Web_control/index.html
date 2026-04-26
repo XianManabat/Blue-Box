@@ -1,30 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Blue Box</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <div class="container">
-            <h1>Blue box</h1>
-            <p>Select a mode to continue</p>
+body {
+    font-family: sans-serif;
+    background-color: #f5f5f5;
+    color: #111;
+    height: 100vh;
+    overflow: hidden;
+}
 
-            <!-- This is for the options -->
-            <div class="card-grid">
-                <!-- This is for the LINE FOLLOWING BOT -->
-                <div class="line-following" onclick="location.href='line_following.html'">
-                    <h2>Line Follower controller</h2>
-                </div>
-                <!-- This is for the CLAW ARM BOT -->
-                <div class="claw-bot" onclick="location.href='claw_bot.html'">
-                    <h2>Claw bot controller</h2>
-                </div>
+.controller-box {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 100vh;
+    gap: 1rem;
+    padding: 1rem;
+}
 
-            </div>
+.pad-box, .turn-box { 
+    height: 40%; 
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        </div>
-    </body>
-</html>
+.dashboard {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    height: 80%;
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pad-box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.pads {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.pad-btn {
+    width: 100px;
+    height: 100px;
+    font-size: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    
+}
