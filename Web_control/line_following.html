@@ -33,7 +33,31 @@
         </div>
 
         <div class="dashboard">
-            <p>Dashboard</p>
+            <div class="dashboard-inner">
+
+                <div class="mode-buttons">
+                    <button class="mode-btn active" id="btn-auto" onclick="switchMode('auto')">Auto</button>
+                    <button class="mode-btn" id="btn-maintenance" onclick="switchMode('maintenance')">Maintenance</button>
+                    <button class="mode-btn" id="btn-manual" onclick="switchMode('manual')">Manual</button>
+                </div>
+
+                <div class="mode-content" id="mode-auto">
+                    <!-- We need to add a feature where the robot recognize what turn and path it is on -->
+                    <p class="status-text">● Robot is running autonomously</p>
+                </div>
+
+                <div class="mode-content" id="mode-maintenance" style="display:none;">
+                    <label>Left wheel speed</label>
+                    <input type="range" min="0" max="255" value="150" id="speed-left">
+                    <label>Right wheel speed</label>
+                    <input type="range" min="0" max="255" value="150" id="speed-right">
+                </div>
+
+                <div class="mode-content" id="mode-manual" style="display:none;">
+                    <p class="status-text">Speeds reset to default</p>
+                </div>
+
+            </div>
         </div>
 
         <div class="turn-box">
@@ -47,3 +71,11 @@
     </div>
 
 </html>
+<script>
+    function switchMode(mode) {
+        document.querySelectorAll('.mode-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.mode-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('mode-' + mode).style.display = 'flex';
+        document.getElementById('btn-' + mode).classList.add('active');
+    }
+</script>
